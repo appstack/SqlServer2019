@@ -1,0 +1,84 @@
+USE [master];
+GO
+
+IF DB_ID('SQL_Road') IS NOT NULL DROP DATABASE SQL_Road;
+CREATE DATABASE [SQL_Road];
+GO
+
+USE [SQL_Road];
+GO
+
+CREATE TABLE [dbo].[Customers](
+	[客户ID] [INT] IDENTITY(1,1) NOT NULL,
+	[姓名] [VARCHAR](10) NULL,
+	[地址] [VARCHAR](50) NULL,
+	[城市] [VARCHAR](20) NULL,
+	[邮编] [CHAR](6) NULL,
+	[省份] [VARCHAR](20) NULL
+) ;
+
+CREATE TABLE [dbo].[Orders](
+	[订单ID] [INT] IDENTITY(1,1) NOT NULL,
+	[客户ID] [INT] NULL,
+	[员工ID] [INT] NULL,
+	[订单日期] [DATETIME] NULL,
+	[发货ID] [INT] NULL
+) ;
+
+CREATE TABLE [dbo].[Products](
+	[产品ID] [INT] IDENTITY(1,1) NOT NULL,
+	[名称] [VARCHAR](20) NULL,
+	[供应商ID] [INT] NULL,
+	[目录ID] [INT] NULL,
+	[规格] [VARCHAR](50) NULL,
+	[价格] [NUMERIC](18, 2) NULL
+) ;
+
+CREATE TABLE [dbo].[Suppliers](
+	[供应商ID] [INT] IDENTITY(1,1) NOT NULL,
+	[供应商名称] [VARCHAR](20) NULL,
+	[地址] [VARCHAR](50) NULL,
+	[城市] [VARCHAR](20) NULL,
+	[邮编] [CHAR](6) NULL,
+	[省份] [VARCHAR](20) NULL
+) ;
+
+SET NOCOUNT ON;
+
+SET IDENTITY_INSERT [dbo].[Customers] ON
+INSERT INTO [dbo].[Customers] (客户ID,姓名,地址,城市,邮编,省份)
+VALUES
+( 1, '张三', '北京路27号', '上海', '200000', '上海市' ), 
+( 2, '李四', '南京路12号', '杭州', '310000', '浙江省' ), 
+( 3, '王五', '花城大道17号', '广州', '510000', '广东省' ), 
+( 4, '马六', '江夏路19号', '武汉', '430000', '湖北省' ), 
+( 5, '赵七', '西二旗12号', '北京', '100000', '北京市' );
+SET IDENTITY_INSERT [dbo].[Customers] OFF;
+
+SET IDENTITY_INSERT [dbo].[Orders] ON;
+INSERT INTO [dbo].[Orders](订单ID,客户ID,员工ID,订单日期,发货ID)
+VALUES
+( 1, 3, 9, N'2018-09-21T00:00:00', 3 ), 
+( 2, 4, 9, N'2018-06-28T00:00:00', 5 ), 
+( 3, 6, 3, N'2018-09-21T00:00:00', 3 ), 
+( 4, 3, 7, N'2018-09-28T00:00:00', 4 ), 
+( 5, 1, 4, N'2018-09-30T00:00:00', 4 );
+SET IDENTITY_INSERT [dbo].[Orders] OFF;
+
+SET IDENTITY_INSERT  [dbo].[Products] ON;
+INSERT INTO [dbo].[Products](产品ID,名称,供应商ID,目录ID,规格,价格)
+VALUES
+( 1, '面包', 1, 1, '10个/袋', 18.00 ), 
+( 2, '大米', 1, 1, '25kg/袋', 75.00 ), 
+( 3, '苹果', 1, 2, '10kg/箱', 50.00 ), 
+( 4, '香蕉', 2, 2, '10kg/箱', 45.00 ), 
+( 5, '雪梨', 2, 2, '10kg/箱', 60.00 );
+SET IDENTITY_INSERT [dbo].[Products] OFF;
+
+SET IDENTITY_INSERT  [dbo].[Suppliers] ON;
+INSERT INTO [dbo].[Suppliers](供应商ID,供应商名称,地址,城市,邮编,省份)
+VALUES
+( 1, '沃尔玛', '北京路35号', '上海', '200000', '上海市' ), 
+( 2, '家乐福', '玄武街28号', '南京', '210000', '江苏省' ), 
+( 3, '永旺超市', '咸阳街1123号', '西安', '710000', '陕西省' );
+SET IDENTITY_INSERT  [dbo].[Suppliers] OFF;
