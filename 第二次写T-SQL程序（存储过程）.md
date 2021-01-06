@@ -5,7 +5,7 @@ USE [DEVELOP]
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[Fk_Reservation_P]    Script Date: 2021/1/6 18:30:22 ******/
+/****** Object:  StoredProcedure [dbo].[Fk_Reservation_P]    Script Date: 2021/1/6 21:51:57 ******/
 SET ANSI_NULLS ON
 
 GO
@@ -56,7 +56,7 @@ AS
           SELECT @FkNo = @IDTest;
 
           --测试数据
-          --SET @IDCard = '420303198012120101';
+          SET @IDCard = '420303198012120101';
           SET @UName = '五条人';
           SET @SqTime =Replace(Replace(Replace(CONVERT(VARCHAR, Getdate(), 120), '-', ''), ' ', ''), ':', '');
 
@@ -108,6 +108,15 @@ AS
                        @VisitorType,
                        @Platform);
 
+          IF @@ROWCOUNT = 1
+            BEGIN
+                SELECT '恭喜，预约成功！请耐心等待审核结果。';
+            END
+          ELSE
+            BEGIN
+                SELECT '数据提交失败！';
+            END
+
           COMMIT TRAN;
       END TRY-----------结束捕捉异常
       BEGIN CATCH------------有异常被捕获
@@ -119,8 +128,9 @@ AS
                        Error_procedure(),--出现错误的存储过程或 触发器的名称
                        Error_line(),--导致错误的例程中的行号
                        Error_message()); --错误消息的完整文本
-          PRINT '执行错误，请联系管理员！';
-      --RETURN '执行错误，请联系管理员！';
+          
+          --PRINT '执行错误，请联系管理员！';
+          SELECT '系统错误，请联系管理员！';
       END CATCH--------结束异常处理
   END 
 
