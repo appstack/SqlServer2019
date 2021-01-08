@@ -140,7 +140,83 @@ deallocate mycur
 
 ### 函数
 
-#### 无参数
+#### 1. 表值函数
+
+##### 1. 标准写法
+
+```plsql
+USE [DEVELOP]
+
+GO
+
+-- ================================================
+-- Template generated from Template Explorer using:
+-- Create Multi-Statement Function (New Menu).SQL
+--
+-- Use the Specify Values for Template Parameters 
+-- command (Ctrl-Shift-M) to fill in the parameter 
+-- values below.
+--
+-- This block of comments will not be included in
+-- the definition of the function.
+-- ================================================
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+alter FUNCTION F_TEST_TABLE (@USERID NVARCHAR(8))
+RETURNS
+@TEST_TABLE TABLE
+(
+USERID VARCHAR(9),
+USERNAME VARCHAR(22)
+)
+AS
+BEGIN
+INSERT INTO @TEST_TABLE
+	SELECT UserID,UserName FROM SYSES_UserID where UserID = @USERID;	
+	RETURN ;
+END
+GO 
+
+--用法
+select * from F_TEST_TABLE('Fun');
+```
+
+##### 2. 简化写法
+
+函数体内只能有RETURN+SQL查询结果
+
+```plsql
+CREATE FUNCTION F_test_table (@USERID NVARCHAR(8))
+RETURNS TABLE
+AS
+    RETURN
+      SELECT UserID,
+             UserName
+      FROM   SYSES_UserID
+      WHERE  UserID = @USERID;
+
+GO 
+
+--用法
+select * from F_TEST_TABLE('Fun');
+```
+
+
+
+#### 2. 标量值函数
+
+##### 无参数
 
 ```plsql
 DROP FUNCTION aaa_test;
@@ -159,7 +235,7 @@ AS
 SELECT dbo.Aaa_test(); --fzy
 ```
 
-#### 带参数
+##### 带参数
 
 ```plsql
 
@@ -184,7 +260,11 @@ SELECT dbo.Aaa_test('fzy'); --樊正玉
 
 ### 存储过程
 
-#### 带传入参数
+> https://www.cnblogs.com/atlj/p/11184952.html
+
+
+
+#### 有参数
 
 ```plsql
 USE [DEVELOP]
@@ -314,4 +394,13 @@ AS
 EXEC [dbo].[Fk_Reservation_P] 'FKNO',null,null,'','','','36.6','','','','','','','','','','','','','','',''; 
 ```
 
+#### 无参数
+
+#### 调用方法
+
+```plsql
+DECLARE @IDTest varchar(14);
+EXEC [dbo].[xp_GetNo] 'FKNO',@IDTest OUTPUT; 
+SELECT  @IDTest;
+```
 
