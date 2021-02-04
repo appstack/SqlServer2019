@@ -35,6 +35,12 @@ EXEC msdb.dbo.Sysmail_add_profileaccount_sp
   @sequence_number = 1 -- account 在 profile 中顺序（默认是1）
 go 
 
+
+--配置查看
+select * from msdb.dbo.sysmail_account;
+select * from msdb.dbo.sysmail_profile;
+--delete from msdb.dbo.sysmail_account
+--delete from msdb.dbo.sysmail_profile
 ```
 
 #### 发邮件
@@ -55,6 +61,18 @@ EXEC msdb.dbo.Sp_send_dbmail
   @body=@emailcontent,--邮件正文内容
   @body_format='html' --邮件内容格式
 
+
+```
+
+#### 发送结果
+
+```sql
+select * from msdb.dbo.sysmail_allitems; --全部消息
+select * from msdb.dbo.sysmail_faileditems; --失败状态的消息
+select * from msdb.dbo.sysmail_unsentitems; --看未发送的消息
+select * from msdb.dbo.sysmail_sentitems; --查看已发送的消息
+
+select * from msdb.dbo.sysmail_event_log; --邮件服务器日记
 
 ```
 
